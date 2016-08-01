@@ -37,8 +37,10 @@ public class ChatFrame extends javax.swing.JFrame implements MessageListener {
         jlHistory.setModel(dlmHistory = new DefaultListModel<>());
         
         if (dlmContacts.size() == 0) {
-            dlmContacts.addElement(new ChatContact());
+            dlmContacts.addElement(new ChatContact("127.0.0.1"));
         }
+        
+        jlContacts.setSelectedIndex(0);
 
         initReceiver();
     }
@@ -150,7 +152,10 @@ public class ChatFrame extends javax.swing.JFrame implements MessageListener {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbSendActionPerformed
-        String address = "127.0.0.1";
+        int index = jlContacts.getSelectedIndex();
+        if (index < 0) return;
+        
+        String address = dlmContacts.get(index).getAddress();
         ChatMessage message = new ChatMessage(address, jtaMessage.getText());
         if (sendMessage(message)) {
             jtaMessage.setText("");
